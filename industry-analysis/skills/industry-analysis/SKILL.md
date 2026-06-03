@@ -6,7 +6,7 @@ description: >
   command. It implements Wang Yuquan's (王煜全) Industrial Insights Methodology as a
   systematic 18-step SOP validated across manufacturing, software, and frontier technology
   industries. Supports two modes: --quick (4-step rapid scan) and --full (18-step deep analysis).
-version: 1.0.0
+version: 1.1.0
 argument-hint: "'[--quick|--full] <industry-name>'"
 allowed-tools:
   [
@@ -16,12 +16,26 @@ allowed-tools:
     "Read",
     "Write",
     "Edit",
+    "Agent",
   ]
+session-start:
+  - "Run `python3 ${CLAUDE_PLUGIN_ROOT}/skills/industry-analysis/scripts/search.py --verify` to verify all reference files exist"
 ---
 
 # Industry Analysis SOP / 产业洞察SOP
 
 Systematic industry analysis framework based on Wang Yuquan's Industrial Insights Methodology (产业洞察方法学). Delivers structured analysis from industry boundary definition through scenario matrix and signal tracking.
+
+## Session Initialization
+
+On session start, verify integrity:
+```bash
+python3 ${CLAUDE_PLUGIN_ROOT}/skills/industry-analysis/scripts/search.py --verify
+```
+
+If any files are missing, report them before proceeding. Restore context from `CLAUDE.md` at the project root if available.
+
+---
 
 ## Quick Start
 
@@ -133,6 +147,17 @@ Use WebSearch for each query and WebFetch for the most promising results.
 
 ---
 
+## MCP-Enhanced Data Collection (Optional)
+
+> **Note:** This is a placeholder for Phase 2 MCP integration. When bio-research MCP servers are available:
+> - **Medical/Pharma/Biotech**: Use ClinicalTrials.gov for trial pipeline, ChEMBL for drug mechanisms, PubMed for literature
+> - **Frontier Tech**: Use Consensus for technology readiness, PubMed for research papers
+> - **Manufacturing/Software**: WebSearch remains primary; MCP is supplementary
+>
+> MCP tools are optional — the SOP works with WebSearch alone when servers are unavailable.
+
+---
+
 ## Reference Files
 
 ### Core Methodology
@@ -163,7 +188,7 @@ Structure all deliverables as a **pyramid** (金字塔结构):
 │   ONE CONCLUSION / THESIS STATEMENT  │  ← Top: actionable judgment
 ├──────────────────────────────────────┤
 │  Argument 1  │  Argument 2 │  Arg 3  │  ← Middle: 3-5 pillars
-├──────────────┴─────────────┴────────┤
+├──────────────────────────────────────┤
 │ Evidence │ Data │ Source │ Analysis  │  ← Bottom: proof
 └──────────────────────────────────────┘
 ```
@@ -174,3 +199,4 @@ Structure all deliverables as a **pyramid** (金字塔结构):
 - Always cite sources with links when using WebSearch/WebFetch results
 - When uncertain, state assumptions explicitly rather than fabricating data
 - For quantitative data (market size, share, revenue), prefer official sources or reputable third-party research
+- Run integrity check (`search.py --verify`) before starting analysis to ensure all files are available

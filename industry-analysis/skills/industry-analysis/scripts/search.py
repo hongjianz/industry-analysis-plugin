@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
-"""Industry Analysis SOP - Multi-source search strategy generator.
+"""Industry Analysis SOP - Multi-source search strategy generator & integrity checker.
 
-Usage: python3 search.py <industry_name> <industry_type: manufacturing|software|frontier>
-Example: python3 search.py "solid state battery" manufacturing
+Usage:
+  python3 search.py <industry_name> <industry_type: manufacturing|software|frontier>
+  python3 search.py --verify
+
+Examples:
+  python3 search.py "solid state battery" manufacturing
+  python3 search.py --verify
 """
 
+import os
 import sys
 from dataclasses import dataclass
 from typing import List
@@ -15,6 +21,62 @@ class SearchQuery:
     query: str
     priority: int  # 1=high, 2=medium, 3=low
     category: str  # market|technology|competition|supply_chain|policy
+
+
+PLUGIN_ROOT = os.environ.get(
+    "CLAUDE_PLUGIN_ROOT",
+    os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..", "..")),
+)
+
+REQUIRED_FILES = {
+    "Core": [
+        "skills/industry-analysis/SKILL.md",
+        "skills/industry-analysis/references/SOP-v1.0.md",
+        "skills/industry-analysis/scripts/search.py",
+    ],
+    "Templates": [
+        "skills/industry-analysis/references/templates/manufacturing.md",
+        "skills/industry-analysis/references/templates/software.md",
+        "skills/industry-analysis/references/templates/frontier.md",
+    ],
+    "Examples": [
+        "skills/industry-analysis/references/examples/cgm-example.md",
+        "skills/industry-analysis/references/examples/ai-coding-example.md",
+        "skills/industry-analysis/references/examples/solid-state-example.md",
+        "skills/industry-analysis/references/examples/fusion-example.md",
+    ],
+    "Assets": [
+        "skills/industry-analysis/assets/scenario-matrix.md",
+    ],
+    "Plugin Config": [
+        ".claude-plugin/plugin.json",
+        ".claude/settings.json",
+        "CLAUDE.md",
+    ],
+}
+
+
+def verify_integrity() -> bool:
+    """Check that all required plugin files exist."""
+    all_ok = True
+    print("# Industry Analysis Plugin - Integrity Check")
+    print(f"Root: {PLUGIN_ROOT}")
+    print()
+    for group, files in REQUIRED_FILES.items():
+        print(f"## {group}")
+        for rel_path in files:
+            full_path = os.path.join(PLUGIN_ROOT, rel_path)
+            exists = os.path.isfile(full_path)
+            status = "✓" if exists else "✗ MISSING"
+            if not exists:
+                all_ok = False
+            print(f"  [{status}] {rel_path}")
+        print()
+    if all_ok:
+        print("Result: ALL FILES PRESENT")
+    else:
+        print("Result: SOME FILES ARE MISSING — check the ✗ entries above")
+    return all_ok
 
 
 def build_queries(industry: str, industry_type: str) -> List[SearchQuery]:
@@ -50,14 +112,26 @@ def build_queries(industry: str, industry_type: str) -> List[SearchQuery]:
 
 
 def main():
+    if len(sys.argv) < 2:
+        print("Usage:")
+        print("  python3 search.py <industry_name> <manufacturing|software|frontier>")
+        print("  python3 search.py --verify")
+        sys.exit(1)
+
+    if sys.argv[1] == "--verify":
+        ok = verify_integrity()
+        sys.exit(0 if ok else 1)
+
     if len(sys.argv) < 3:
         print("Usage: python3 search.py <industry_name> <manufacturing|software|frontier>")
         sys.exit(1)
+
     industry = sys.argv[1]
     industry_type = sys.argv[2].lower()
     if industry_type not in ("manufacturing", "software", "frontier"):
         print(f"Error: unsupported type '{industry_type}'")
         sys.exit(1)
+
     queries = build_queries(industry, industry_type)
     print(f"# {industry} - Search Strategy ({industry_type})")
     print("| Priority | Category | Query |")

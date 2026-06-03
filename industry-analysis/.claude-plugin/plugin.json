@@ -1,11 +1,44 @@
 {
   "name": "industry-analysis",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "产业洞察SOP——系统性行业分析框架，基于王煜全《学会洞察行业》方法学。覆盖制造业、软件、前沿技术三类行业，支持快速扫描和完整分析两种模式。",
   "author": {
     "name": "hongjianz"
   },
   "repository": "https://github.com/hongjianz/industry-analysis-plugin",
   "license": "MIT",
-  "keywords": ["industry-analysis", "产业洞察", "SOP", "methodology", "行业分析"]
+  "keywords": [
+    "industry-analysis",
+    "产业洞察",
+    "SOP",
+    "methodology",
+    "行业分析"
+  ],
+  "commands": {
+    "industry-analysis": {
+      "file": "commands/industry-analysis.md",
+      "allow-args": true,
+      "description": "产业洞察SOP——基于王煜全方法学的系统性行业分析"
+    }
+  },
+  "skills": {
+    "industry-analysis": {
+      "file": "skills/industry-analysis/SKILL.md",
+      "description": "产业洞察SOP——系统性行业分析框架，支持 --quick（4步快速扫描）和 --full（18步完整分析）"
+    }
+  },
+  "hooks": {
+    "session-start": {
+      "command": "python3 ${CLAUDE_PLUGIN_ROOT}/skills/industry-analysis/scripts/search.py --verify",
+      "description": "Verify all SOP reference files exist"
+    }
+  },
+  "mcp": {
+    "optional": [
+      "plugin-bio-research-pubmed",
+      "plugin-bio-research-chembl",
+      "plugin-bio-research-consensus",
+      "plugin-bio-research-c-trials"
+    ]
+  }
 }

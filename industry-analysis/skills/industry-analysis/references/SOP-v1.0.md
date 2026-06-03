@@ -1,6 +1,6 @@
-# SOP v1.0 完整参考
+# SOP v1.1 完整参考
 
-> 产业洞察SOP v1.0完整流程。此文件在需要查看详尽步骤说明时加载。
+> 产业洞察SOP v1.1完整流程。此文件在需要查看详尽步骤说明时加载。
 
 ---
 
@@ -70,3 +70,35 @@
 > 前沿技术看三角，卖铲规律要记清。
 > 关键变量定场景，信号跟踪好决策。
 > 每用一次都复盘，SOP越用越通明。
+
+---
+
+## Appendix A: File Integrity Checklist
+
+在开始分析之前，确认以下文件全部存在：
+
+### Core
+- [ ] `SKILL.md` — v1.1.0
+- [ ] `references/SOP-v1.0.md` — v1.1
+- [ ] `scripts/search.py`
+
+### Templates
+- [ ] `references/templates/manufacturing.md`
+- [ ] `references/templates/software.md`
+- [ ] `references/templates/frontier.md`
+
+### Examples
+- [ ] `references/examples/cgm-example.md`
+- [ ] `references/examples/ai-coding-example.md`
+- [ ] `references/examples/solid-state-example.md`
+- [ ] `references/examples/fusion-example.md`
+
+### Assets
+- [ ] `assets/scenario-matrix.md`
+
+### Plugin Config
+- [ ] `.claude-plugin/plugin.json` (should contain commands/skills/hooks declarations)
+- [ ] `.claude/settings.json` (should declare allowed tools and env vars)
+- [ ] `CLAUDE.md` (project-level memory)
+
+> 运行 `python3 scripts/search.py --verify` 自动检查以上文件完整性。

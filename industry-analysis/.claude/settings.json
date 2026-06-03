@@ -1,0 +1,14 @@
+{
+  "env": {
+    "CLAUDE_PLUGIN_ROOT": "/home/hongjianz/industry-analysis-plugin/industry-analysis"
+  },
+  "allowedTools": [
+    "WebSearch",
+    "WebFetch",
+    "Bash",
+    "Read",
+    "Write",
+    "Edit",
+    "Agent"
+  ]
+}
