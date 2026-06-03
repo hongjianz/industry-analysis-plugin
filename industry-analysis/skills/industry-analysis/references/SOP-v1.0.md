@@ -1,7 +1,7 @@
-# SOP v1.2 完整参考
+# SOP v1.3 完整参考
 
-> 产业洞察SOP v1.2完整流程。此文件在需要查看详尽步骤说明时加载。
-> v1.2新增：MCP增强数据采集（Step 5b）、生物医药行业类型。
+> 产业洞察SOP v1.3完整流程。此文件在需要查看详尽步骤说明时加载。
+> v1.3新增：分析持久化（Step 16.5）、信号跨session追踪、outputs/归档。
 
 ---
 
@@ -26,6 +26,7 @@
 ⑭ 关键变量识别（路径分叉+不确定性+时间窗口）
 ⑮ 未来场景推演（2×2矩阵+概率权重）
 ⑯ 跟踪信号定义 + 复盘迭代
+⑯.5 归档至分析日志 + 更新信号追踪器（持久化）
 ⑰ 卖铲人分析（仅前沿技术行业）
 ⑱ 开源/社区分析（仅软件行业）
 ```
@@ -58,6 +59,33 @@
 2. 使用ClinicalTrials.gov获得的管线数据，用WebSearch验证公司官方新闻稿
 3. 使用ChEMBL获得的药物机制，用PubMed文献验证临床相关性
 4. 所有MCP来源数据必须像WebSearch一样标注来源
+
+## Step 16.5: Persistence — 分析归档与信号追踪
+
+SOP的核心价值在于持续追踪和复盘。每次分析完成后必须执行以下持久化操作：
+
+### 操作步骤
+
+1. **写入分析日志**：
+   - 加载 `assets/analysis-log-template.md` 模板
+   - 填入本次分析的全部关键信息（结论、论据、超前指标、关键变量、场景矩阵等）
+   - 写入 `outputs/<YYYY-MM-DD>-<industry-slug>.md`
+
+2. **更新信号追踪器**：
+   - 打开 `outputs/signal-tracker.md`
+   - 新指标 → 追加新区块（按模板格式）
+   - 已有指标 → 追加一行最新数据，标注信号方向（🟢/🔴/🟡）
+   - 同时更新"信号总览表"中的最新行
+
+3. **通知用户**：在分析输出中说明日志文件路径
+
+### 复查流程
+
+| 触发条件 | 操作 |
+|---------|------|
+| 用户再次分析同一行业 | 先读取 outputs/ 中上一次分析日志 |
+| 达到了预设的复查日期 | 更新信号追踪器，检查哪些信号兑现了 |
+| 用户主动要求"复盘" | 加载分析日志 + 信号追踪器，进行 Step 16 反思 |
 
 ## 核心方法论要点
 
@@ -112,8 +140,8 @@
 在开始分析之前，确认以下文件全部存在：
 
 ### Core
-- [ ] `SKILL.md` — v1.2.0
-- [ ] `references/SOP-v1.0.md` — v1.2
+- [ ] `SKILL.md` — v1.3.0
+- [ ] `references/SOP-v1.0.md` — v1.3
 - [ ] `scripts/search.py`
 
 ### Templates
@@ -130,6 +158,12 @@
 
 ### Assets
 - [ ] `assets/scenario-matrix.md`
+- [ ] `assets/analysis-log-template.md`
+- [ ] `assets/signal-tracker.md`
+
+### Outputs (分析输出目录)
+- [ ] `outputs/README.md`
+- [ ] `outputs/signal-tracker.md` (initial state)
 
 ### Plugin Config
 - [ ] `.claude-plugin/plugin.json` (should contain commands/skills/hooks declarations)

@@ -60,6 +60,11 @@ REQUIRED_FILES = {
     ],
     "Assets": [
         "skills/industry-analysis/assets/scenario-matrix.md",
+        "skills/industry-analysis/assets/analysis-log-template.md",
+        "skills/industry-analysis/assets/signal-tracker.md",
+    ],
+    "Outputs": [
+        "outputs/README.md",
     ],
     "Plugin Config": [
         ".claude-plugin/plugin.json",
