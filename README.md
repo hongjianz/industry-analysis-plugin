@@ -51,22 +51,26 @@ Simply ask Claude:
 ## Structure
 
 ```
-industry-analysis-plugin/
+industry-analysis-plugin/           # Marketplace container root
 ├── .claude-plugin/
-│   └── plugin.json              # Plugin manifest
-├── commands/
-│   └── industry-analysis.md     # Slash command entry
-└── skills/
-    └── industry-analysis/
-        ├── SKILL.md             # Core instructions
-        ├── references/
-        │   ├── SOP-v1.0.md     # Full 18-step SOP
-        │   ├── templates/      # 3 industry templates
-        │   └── examples/       # 4 case studies
-        ├── scripts/
-        │   └── search.py       # Search strategy generator
-        └── assets/
-            └── scenario-matrix.md  # Scenario matrix template
+│   └── marketplace.json           # Plugin listing
+├── industry-analysis/             # Plugin subdirectory
+│   ├── .claude-plugin/
+│   │   └── plugin.json            # Plugin manifest
+│   ├── commands/
+│   │   └── industry-analysis.md   # Slash command entry
+│   └── skills/
+│       └── industry-analysis/
+│           ├── SKILL.md           # Core instructions
+│           ├── references/
+│           │   ├── SOP-v1.0.md   # Full 18-step SOP
+│           │   ├── templates/    # 3 industry templates
+│           │   └── examples/     # 4 case studies
+│           ├── scripts/
+│           │   └── search.py     # Search strategy generator
+│           └── assets/
+│               └── scenario-matrix.md  # Scenario matrix template
+└── README.md
 ```
 
 ## Methodology

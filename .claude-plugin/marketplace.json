@@ -1,0 +1,13 @@
+{
+  "name": "industry-analysis-sop",
+  "owner": {
+    "name": "hongjianz"
+  },
+  "plugins": [
+    {
+      "name": "industry-analysis",
+      "source": "./industry-analysis",
+      "description": "产业洞察SOP——系统性行业分析框架，基于王煜全《学会洞察行业》方法学。覆盖制造业、软件、前沿技术三类行业，支持快速扫描(--quick 4步)和完整分析(--full 18步)两种模式。"
+    }
+  ]
+}
