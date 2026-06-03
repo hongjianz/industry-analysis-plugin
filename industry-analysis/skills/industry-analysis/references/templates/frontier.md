@@ -74,3 +74,20 @@
 ## 参考案例
 
 - `references/examples/fusion-example.md` — 核聚变商业化分析
+
+---
+
+## MCP 增强数据采集（可选）
+
+前沿技术行业无商业化数据，学术文献是判断技术可行性的关键。MCP 工具在此类分析中价值最高：
+
+| MCP工具 | 用途 | 示例查询 |
+|---------|------|---------|
+| **Consensus** | 技术可行性学术综合、里程碑验证文献、研究趋势 | `search(query="nuclear fusion Q>1 milestone 2025")` |
+| **PubMed** | 生物医学方向的前沿技术（基因治疗、细胞治疗、RNA技术） | `search_articles(query="CRISPR clinical trial results 2025")` |
+
+**MCP 前沿技术分析工作流：**
+1. 先用 Consensus 搜索技术可行性文献，验证"这个技术到底行不行"
+2. 再用 Consensus 获取研究趋势——论文数量变化反映热度
+3. 用 PubMed 补充具体的临床/临床前数据（限生物医学方向）
+4. 交叉验证：MCP 得到的结论用 WebSearch 找产业界声音验证

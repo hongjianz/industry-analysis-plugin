@@ -63,3 +63,17 @@
 
 - `references/examples/cgm-example.md` — 医疗硬件产业链分析
 - `references/examples/solid-state-example.md` — 制造业技术跃迁
+
+---
+
+## MCP 增强数据采集（可选）
+
+当分析**医疗器械/医疗硬件**等涉及临床试验的制造业子类时，可使用以下 MCP 工具增强数据质量：
+
+| MCP工具 | 用途 | 示例查询 |
+|---------|------|---------|
+| **ClinicalTrials.gov** | 查询器械临床试验状态、上市前/上市后研究 | `search_trials(condition="continuous glucose monitoring", status="active")` |
+| **PubMed** | 查询临床证据文献、技术评估 | `search_articles(query="CGM accuracy clinical trial")` |
+| **Consensus** | 学术综合，技术有效性评估 | `search(query="CGM MARD improvement continuous glucose monitoring")` |
+
+> 制造业的 MCP 使用仅限医疗相关子类。通用制造（如汽车、电子）以 WebSearch 为主。
