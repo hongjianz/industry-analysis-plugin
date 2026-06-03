@@ -4,11 +4,13 @@
 Usage:
   python3 search.py <industry_name> <manufacturing|software|biotech|frontier>
   python3 search.py <industry_name> <type> --with-mcp
+  python3 search.py --compare "Industry A" <type_a> "Industry B" <type_b>
   python3 search.py --verify
 
 Examples:
   python3 search.py "solid state battery" manufacturing
   python3 search.py "GLP-1 receptor agonist" biotech --with-mcp
+  python3 search.py --compare "CGM" manufacturing "smartwatch" manufacturing
   python3 search.py --verify
 """
 
@@ -62,6 +64,7 @@ REQUIRED_FILES = {
         "skills/industry-analysis/assets/scenario-matrix.md",
         "skills/industry-analysis/assets/analysis-log-template.md",
         "skills/industry-analysis/assets/signal-tracker.md",
+        "skills/industry-analysis/assets/comparison-matrix.md",
     ],
     "Outputs": [
         "outputs/README.md",
@@ -197,17 +200,82 @@ def print_mcp_table(suggestions: List[MCPQuery]):
     print("\n> Note: MCP tools are optional enhancements. The SOP works with WebSearch alone.")
 
 
+def print_compare_section(industry_a, type_a, industry_b, type_b):
+    """Print parallel search queries for cross-industry comparison."""
+    queries_a = build_queries(industry_a, type_a)
+    queries_b = build_queries(industry_b, type_b)
+
+    print(f"# Comparison: {industry_a} vs {industry_b}")
+    print()
+    print("## Side-by-Side Search Queries")
+    print()
+    print(f"| Dimension | {industry_a} | {industry_b} |")
+    print(f"|-----------|{'─' * (len(industry_a) + 2)}|{'─' * (len(industry_b) + 2)}|")
+
+    # Group by category for side-by-side comparison
+    categories = ["market", "competition", "technology", "supply_chain", "policy"]
+    for cat in categories:
+        q_a = [q for q in queries_a if q.category == cat]
+        q_b = [q for q in queries_b if q.category == cat]
+        if not q_a and not q_b:
+            continue
+        label = {"market": "Market", "competition": "Competition",
+                 "technology": "Technology", "supply_chain": "Supply Chain",
+                 "policy": "Policy"}.get(cat, cat)
+        a_text = "; ".join(q.query for q in q_a) if q_a else "(not applicable)"
+        b_text = "; ".join(q.query for q in q_b) if q_b else "(not applicable)"
+        print(f"| **{label}** | {a_text} | {b_text} |")
+
+    # MCP suggestions for both
+    mcp_a = build_mcp_suggestions(industry_a, type_a)
+    mcp_b = build_mcp_suggestions(industry_b, type_b)
+    if mcp_a or mcp_b:
+        print()
+        print("## MCP-Enhanced Suggestions")
+        print("| Industry | Tool | Query | Purpose |")
+        print("|----------|------|-------|---------|")
+        for s in mcp_a:
+            label = {1: "HIGH", 2: "MED", 3: "LOW"}[s.priority]
+            print(f"| {industry_a} | {s.tool} | `{s.query_params}` | {s.purpose} [{label}] |")
+        for s in mcp_b:
+            label = {1: "HIGH", 2: "MED", 3: "LOW"}[s.priority]
+            print(f"| {industry_b} | {s.tool} | `{s.query_params}` | {s.purpose} [{label}] |")
+
+    print()
+    print("## Recommended Workflow")
+    print("1. Run Quick Mode on Industry A first, capture findings")
+    print("2. Run Quick Mode on Industry B, capture findings")
+    print("3. Load `assets/comparison-matrix.md` and fill side by side")
+    print("4. Deliver comparison with explicit recommendation")
+
+
 def main():
     if len(sys.argv) < 2:
         print("Usage:")
         print(f"  python3 search.py <industry_name> <{'|'.join(VALID_TYPES)}>")
         print(f"  python3 search.py <industry_name> <{'|'.join(VALID_TYPES)}> --with-mcp")
+        print(f"  python3 search.py --compare \"Industry A\" <type> \"Industry B\" <type>")
         print("  python3 search.py --verify")
         sys.exit(1)
 
     if sys.argv[1] == "--verify":
         ok = verify_integrity()
         sys.exit(0 if ok else 1)
+
+    if sys.argv[1] == "--compare":
+        if len(sys.argv) < 6:
+            print("Usage: python3 search.py --compare \"Industry A\" <type_a> \"Industry B\" <type_b>")
+            print(f"Valid types: {', '.join(VALID_TYPES)}")
+            sys.exit(1)
+        industry_a = sys.argv[2]
+        type_a = sys.argv[3].lower()
+        industry_b = sys.argv[4]
+        type_b = sys.argv[5].lower()
+        if type_a not in VALID_TYPES or type_b not in VALID_TYPES:
+            print(f"Error: invalid type. Valid types: {', '.join(VALID_TYPES)}")
+            sys.exit(1)
+        print_compare_section(industry_a, type_a, industry_b, type_b)
+        return
 
     if len(sys.argv) < 3:
         print("Usage: python3 search.py <industry_name> <manufacturing|software|biotech|frontier>")

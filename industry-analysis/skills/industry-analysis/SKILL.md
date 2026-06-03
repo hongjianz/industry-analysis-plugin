@@ -6,7 +6,7 @@ description: >
   command. It implements Wang Yuquan's (王煜全) Industrial Insights Methodology as a
   systematic 18-step SOP validated across manufacturing, software, biotech, and frontier technology
   industries. Supports two modes: --quick (4-step rapid scan) and --full (18-step deep analysis).
-version: 1.3.0
+version: 1.4.0
 argument-hint: "'[--quick|--full] <industry-name>'"
 allowed-tools:
   [
@@ -17,8 +17,6 @@ allowed-tools:
     "Write",
     "Edit",
     "Agent",
-    "WebSearch",
-    "WebFetch",
   ]
 session-start:
   - "Run `python3 ${CLAUDE_PLUGIN_ROOT}/skills/industry-analysis/scripts/search.py --verify` to verify all reference files exist"
@@ -56,12 +54,14 @@ Check available MCP servers. The following bio-research tools significantly enha
 |------|------|-------|-------------|
 | Quick scan | `--quick` | 4 steps | Rapid assessment: is this industry worth deeper analysis? |
 | Full analysis | `--full` | 18 steps | Deep dive: comprehensive understanding with prediction |
+| Compare | `--compare` | Full ×2 + matrix | Side-by-side comparison of two related industries |
 
 ### Examples
 
 ```
 /industry-analysis --quick 固态电池
 /industry-analysis --full AI编程工具
+/industry-analysis --compare "EV battery" "hydrogen fuel cell"
 ```
 
 Or invoke naturally: *"帮我用产业洞察框架分析一下CGM行业"*
@@ -120,11 +120,24 @@ Synthesize findings into a pyramid-structured report:
 
 Complete in 3-5 conversation turns. Load `references/SOP-v1.0.md` for the complete methodology.
 
+**Interactive process:** Between phases, pause to ask the user for direction. This prevents unnecessary work and adapts the analysis to what the user already knows.
+
+---
+
 **Phase A: Define & Frame (Steps 1-4)**
 1. Define industry boundary (scope what's in/out)
 2. Apply four-dimension evaluation
 3. Build logic tree with hypotheses
 4. Design data collection plan — include MCP tools if applicable (see MCP Decision Tree below)
+
+**🔔 Checkpoint:** After Phase A, ask the user:
+> *"I've mapped the industry boundary and assessed it across the four dimensions. The key question driving this analysis is: **[summarize]** . Shall I proceed to multi-source data collection, or would you like to adjust the scope first?"*
+>
+> *"Also — how familiar are you with this industry? If you already know the competitive landscape, I can skip some of the basic research and focus on gaps."*
+
+Depending on the answer, adjust the depth of Phase B or skip specific steps.
+
+---
 
 **Phase B: Research & Analyze (Steps 5-10)**
 5. **Multi-source data collection**:
@@ -137,12 +150,22 @@ Complete in 3-5 conversation turns. Load `references/SOP-v1.0.md` for the comple
 9. Build pyramid structure
 10. Validate each hypothesis against collected data
 
+**🔔 Checkpoint:** After Phase B, ask the user:
+> *"Data collection is complete. I've identified **[N]** leading indicators and the main scarcity control point is **[X]** . Here's a quick summary of what I found: **[brief]** . Ready to move to scenario prediction, or is there a specific area you'd like to dig deeper into?"*
+
+---
+
 **Phase C: Predict & Conclude (Steps 11-15)**
 11. Identify 2-4 key variables shaping the industry's future
 12. Build 2x2 scenario matrix — use `assets/scenario-matrix.md` as template
 13. Assign probabilities and identify signals for each scenario
 14. Formulate actionable thesis
 15. Document key risks and assumptions
+
+**🔔 Checkpoint:** After Phase C, ask the user:
+> *"I've built the scenario matrix and identified the key variables. The most likely scenario is **[X]** . Shall I proceed to write the final report and archive it?"*
+
+---
 
 **Phase D: Reflect & Persist (Steps 16-18)**
 16. Review what worked and what didn't in this analysis
@@ -262,6 +285,63 @@ outputs/
 
 ---
 
+---
+
+## Comparison Mode (`--compare`)
+
+Compare two related industries side by side when the user needs to evaluate which sector has stronger prospects (investment choice, career decision, technology substitution).
+
+### Workflow
+
+```
+/industry-analysis --compare "Industry A" "Industry B"
+```
+
+1. **Classify each industry** independently (manufacturing/software/biotech/frontier)
+2. **Run Quick Mode on Industry A** — capture key findings in memory
+3. **Run Quick Mode on Industry B** — capture key findings in memory
+4. **Load `assets/comparison-matrix.md`** — fill it with A vs B across all SOP dimensions
+5. **Deliver comparison report** with explicit recommendation
+
+### Comparison Dimensions
+
+| Dimension | What to Compare |
+|-----------|----------------|
+| **Technology Maturity** | Which is more proven? S-curve position |
+| **Market Stage** | Growth rate, TAM, adoption curve |
+| **Competitive Pattern** | Concentration, moats, threat of disruption |
+| **Scarcity Control Points** | Where does value concentrate in each? |
+| **Leading Indicators** | Which has stronger forward signals? |
+| **Key Variables** | What uncertainties could tip the balance? |
+| **Risk Profile** | Which has higher downside? Higher upside? |
+
+### Cross-Validation
+
+Compare the two independently collected datasets:
+- Do the same players appear in both industries? (convergence signal)
+- Does one industry's output feed the other's input? (value chain link)
+- Could one technology make the other obsolete? (substitution risk)
+
+### Output Format
+
+```
+┌─────────────────────────────────────────────────┐
+│  CONCLUSION: Which industry has stronger thesis  │
+├──────────────────────┬──────────────────────────┤
+│   Industry A         │    Industry B            │
+│   ├─ Tech: ...       │    ├─ Tech: ...          │
+│   ├─ Market: ...     │    ├─ Market: ...        │
+│   ├─ Competition: .. │    ├─ Competition: ...   │
+│   └─ Key variables:  │    └─ Key variables:     │
+├──────────────────────┴──────────────────────────┤
+│  RECOMMENDATION with rationale                  │
+└─────────────────────────────────────────────────┘
+```
+
+> **Tip:** For `/industry-analysis --compare`, the command handler runs two analyses sequentially. Each analysis follows the standard SOP workflow.
+
+---
+
 ## Reference Files
 
 ### Core Methodology
@@ -283,6 +363,7 @@ outputs/
 - **`assets/scenario-matrix.md`** — 2x2 scenario matrix template for Step 13
 - **`assets/analysis-log-template.md`** — Structured analysis log template for persistence
 - **`assets/signal-tracker.md`** — Leading indicator signal tracker template
+- **`assets/comparison-matrix.md`** — Cross-industry comparison template for `--compare` mode
 
 ### Outputs (generated by analysis)
 - **`outputs/<YYYY-MM-DD>-<industry-slug>.md`** — Analysis reports (one per analysis)
