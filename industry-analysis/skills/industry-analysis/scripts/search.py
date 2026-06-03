@@ -3,7 +3,9 @@
 
 Usage:
   python3 search.py <industry_name> <type>
-  python3 search.py <industry_name> <type> --with-mcp
+  python3 search.py <industry_name> <type> --with-shiso
+  python3 search.py <industry_name> <type>
+  python3 search.py <industry_name> <type> --with-shiso --with-mcp
   python3 search.py --compare "Industry A" <type_a> "Industry B" <type_b>
   python3 search.py --verify
 
@@ -33,6 +35,14 @@ class MCPQuery:
     query_params: str
     purpose: str
     priority: int
+
+
+@dataclass
+class ShisoQuery:
+    branch: str
+    queries: List[str]
+    purpose: str
+    priority: int  # 1=high, 2=medium, 3=low
 
 
 INDUSTRY_TYPES_STR = "manufacturing|software|biotech|energy|frontier"
@@ -160,6 +170,62 @@ def build_queries(industry: str, industry_type: str) -> List[SearchQuery]:
             SearchQuery(f"{industry} supply chain materials equipment", 3, "supply_chain"),
         ]
     return queries
+
+
+def build_shiso_queries(industry: str, industry_type: str) -> List[ShisoQuery]:
+    """Generate supply chain drill-down queries for chokepoint analysis."""
+    queries = []
+    if industry_type == "manufacturing":
+        queries = [
+            ShisoQuery("Raw Materials", [f"{industry} raw materials supply source", f"{industry} critical material dependency"], "Identify material-level scarcity", 1),
+            ShisoQuery("Core Components", [f"{industry} key components suppliers", f"{industry} component bottleneck"], "Find component-level concentration", 1),
+            ShisoQuery("Manufacturing Process", [f"{industry} production process critical step", f"{industry} manufacturing yield"], "Process-level chokepoints", 2),
+            ShisoQuery("Equipment", [f"{industry} production equipment suppliers", f"{industry} manufacturing tooling"], "Equipment supply concentration", 2),
+        ]
+    elif industry_type == "software":
+        queries = [
+            ShisoQuery("Infrastructure", [f"{industry} cloud infrastructure dependency", f"{industry} compute cost"], "Infrastructure-level lock-in", 1),
+            ShisoQuery("Data", [f"{industry} training data sources proprietary", f"{industry} data moat"], "Data scarcity and exclusivity", 1),
+            ShisoQuery("Ecosystem", [f"{industry} platform dependency lock-in", f"{industry} API dependency"], "Platform/ecosystem control points", 2),
+            ShisoQuery("Talent", [f"{industry} key talent scarcity hiring"], "Talent concentration risk", 3),
+        ]
+    elif industry_type == "biotech":
+        queries = [
+            ShisoQuery("Target/IP", [f"{industry} key patent exclusivity", f"{industry} target IP landscape"], "IP chokepoints", 1),
+            ShisoQuery("Supply Chain", [f"{industry} raw material reagent supplier", f"{industry} manufacturing CMO CDMO"], "Manufacturing dependency", 1),
+            ShisoQuery("Regulatory", [f"{industry} FDA approval bottleneck", f"{industry} regulatory pathway"], "Regulatory gatekeeper", 2),
+            ShisoQuery("Clinical", [f"{industry} clinical trial enrollment site"], "Clinical execution risk", 2),
+        ]
+    elif industry_type == "energy":
+        queries = [
+            ShisoQuery("Critical Materials", [f"{industry} critical material supply chain", f"{industry} rare earth dependency"], "Material scarcity", 1),
+            ShisoQuery("Manufacturing", [f"{industry} manufacturing equipment supplier concentration", f"{industry} production bottleneck"], "Equipment and production chokepoints", 1),
+            ShisoQuery("Infrastructure", [f"{industry} grid connection permitting bottleneck", f"{industry} project approval timeline"], "Infrastructure access", 2),
+            ShisoQuery("Capital", [f"{industry} project finance availability cost of capital"], "Capital concentration", 3),
+        ]
+    elif industry_type == "frontier":
+        queries = [
+            ShisoQuery("Capital", [f"{industry} venture capital concentration key investors"], "Capital gatekeeper", 1),
+            ShisoQuery("Talent", [f"{industry} key scientist talent poaching"], "Talent bottleneck", 1),
+            ShisoQuery("IP", [f"{industry} foundational patent university license"], "IP ownership", 2),
+            ShisoQuery("Supply Chain", [f"{industry} specialized equipment supplier"], "Equipment dependency", 2),
+        ]
+    return queries
+
+
+def print_shiso_table(queries: List[ShisoQuery]):
+    print("\n## Shiso Chokepoint Analysis -- Supply Chain Drill-Down Queries")
+    print("| Priority | Branch | Query | Purpose |")
+    print("|----------|--------|-------|---------|")
+    for q in sorted(queries, key=lambda x: x.priority):
+        label = {1: "HIGH", 2: "MED", 3: "LOW"}[q.priority]
+        for query in q.queries:
+            print(f"| {label} | {q.branch} | `{query}` | {q.purpose} |")
+    print("\nAfter gathering data, apply the 6-step Shiso method:")
+    print("  1. Lock terminal demand  2. Branch drill-down + stop ruling")
+    print("  3. First-principles GT    4. Cross-interaction + resort")
+    print("  5. Forced falsification   6. Map companies to chokepoints")
+    print("See `references/templates/shiso-chokepoint.md` for the full method.\n")
 
 
 def build_mcp_suggestions(industry: str, industry_type: str) -> List[MCPQuery]:
@@ -322,6 +388,11 @@ def main():
         mcp_suggestions = build_mcp_suggestions(industry, industry_type)
         if mcp_suggestions:
             print_mcp_table(mcp_suggestions)
+
+    if "--with-shiso" in sys.argv:
+        shiso_queries = build_shiso_queries(industry, industry_type)
+        if shiso_queries:
+            print_shiso_table(shiso_queries)
 
 
 if __name__ == "__main__":

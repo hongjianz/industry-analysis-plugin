@@ -19,6 +19,7 @@
 ⑦ 超前指标识别（"剥洋葱"方向因行业不同）
 ⑧ 核心模型选择（PEST/四象限/比较研究/合作竞争等）
 ⑨ 生态/产业链深度分析（按行业类型选模板）
+	⑨b 紫苏叶卡点分析（可选增强，见 Step 9b 说明） ⚡
 ⑩ 地缘竞争分析（政策敏感行业单独展开）
 ⑪ 市场规模估算（已商业化：TAM/SAM/SOM；未商业化：情景假设）
 ⑫ 金字塔结构输出（结论先行）
@@ -193,6 +194,7 @@ SOP的核心价值在于持续追踪和复盘。每次分析完成后必须执�
 - [ ] `references/templates/biotech.md`
 - [ ] `references/templates/energy.md`
 - [ ] `references/templates/frontier.md`
+	- [ ] `references/templates/shiso-chokepoint.md`
 
 ### Examples
 - [ ] `references/examples/cgm-example.md`

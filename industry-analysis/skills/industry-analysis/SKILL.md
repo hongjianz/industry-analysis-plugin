@@ -8,8 +8,8 @@ description: >
   manufacturing, software, biotech, frontier technology, and energy industries.
   Supports three modes: --quick (4-step rapid scan), --full (18-step deep analysis),
   and --compare (cross-industry comparison).
-version: 2.0.0
-argument-hint: "'[--quick|--full] <industry-name>'"
+version: 2.1.0
+argument-hint: "'[--quick|--full|--compare] [--with-shiso] <industry-name>'"
 allowed-tools:
   [
     "WebSearch",
@@ -45,6 +45,20 @@ Check available MCP servers. The following bio-research tools significantly enha
 - **ChEMBL**: Drug target mechanisms and compound data
 - **Consensus**: Academic paper synthesis with citation metadata
 - **ClinicalTrials.gov**: Clinical trial pipeline data
+
+### Shiso Chokepoint Analysis (`--with-shiso`)
+
+When `--with-shiso` is passed, augment any mode with the **紫苏叶卡点分析** module.
+This systematically identifies scarcity control points through:
+
+1. **Supply chain drill-down**: decompose product into branches, recursively drill, apply stopping rules
+2. **First-principles Ground Truth**: identify physical/biological/institutional/economic constraints
+3. **Cross-interaction matrix**: how Ground Truths amplify each other
+4. **Forced falsification**: "if this were not a choke point, what would the world look like?"
+5. **Company mapping**: who sits on each choke point
+
+> Full methodology: `references/templates/shiso-chokepoint.md`
+> Example: `resources/2026-06-03-CGM.md`
 
 ---
 
