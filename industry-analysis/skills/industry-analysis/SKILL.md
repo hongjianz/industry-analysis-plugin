@@ -2,11 +2,13 @@
 name: industry-analysis
 description: >
   This skill should be used when the user asks to "分析行业", "行业洞察", "产业分析",
-  "industry analysis", "行业研究", "分析一下 XXX 行业", or uses the /industry-analysis
-  command. It implements Wang Yuquan's (王煜全) Industrial Insights Methodology as a
-  systematic 18-step SOP validated across manufacturing, software, biotech, and frontier technology
-  industries. Supports two modes: --quick (4-step rapid scan) and --full (18-step deep analysis).
-version: 1.4.0
+  "industry analysis", "行业研究", "分析一下 XXX 行业", "industry insight",
+  or uses the /industry-analysis command. It implements Wang Yuquan's (王煜全)
+  Industrial Insights Methodology as a systematic 18-step SOP validated across
+  manufacturing, software, biotech, frontier technology, and energy industries.
+  Supports three modes: --quick (4-step rapid scan), --full (18-step deep analysis),
+  and --compare (cross-industry comparison).
+version: 2.0.0
 argument-hint: "'[--quick|--full] <industry-name>'"
 allowed-tools:
   [
@@ -78,6 +80,7 @@ Classify the industry before starting:
 | **Software** | No physical supply chain, platform effects, network moats, R&D driven | `references/templates/software.md` |
 | **Biotech/Pharma** | R&D pipeline-driven, FDA/EMA regulatory path, patent lifecycle, clinical trial data as leading indicator | `references/templates/biotech.md` |
 | **Frontier Technology** | Pre-commercialization, tech roadmap uncertain, capital-intensive | `references/templates/frontier.md` |
+| **Energy/Cleantech** | Policy-driven, technology cost curves (learning rates), project finance, grid integration | `references/templates/energy.md` |
 
 Load the corresponding template — it will guide the analysis structure.
 
@@ -283,10 +286,6 @@ outputs/
 
 > Persistence is opt-in by design — the user can skip it if the analysis is exploratory. Always ask before writing if uncertain.
 
----
-
----
-
 ## Comparison Mode (`--compare`)
 
 Compare two related industries side by side when the user needs to evaluate which sector has stronger prospects (investment choice, career decision, technology substitution).
@@ -346,11 +345,16 @@ Compare the two independently collected datasets:
 
 ### Core Methodology
 - **`references/SOP-v1.0.md`** — Complete 18-step SOP with detailed instructions for each step
+- **`references/templates/TEMPLATE-GUIDE.md`** — Guide for creating new industry templates
+
+### Guides
+- **`CONTRIBUTING.md`** — Community contribution guide for templates, examples, and translations
 
 ### Industry Templates
 - **`references/templates/manufacturing.md`** — Manufacturing-specific analysis template (supply chain, raw materials, production scale)
 - **`references/templates/software.md`** — Software-specific template (platform effects, network moats, ecosystem)
 - **`references/templates/biotech.md`** — Biotech/pharma template (pipeline analysis, regulatory path, patent lifecycle, MCP-optimized)
+- **`references/templates/energy.md`** — Energy/cleantech template (policy drivers, learning curves, project finance)
 - **`references/templates/frontier.md`** — Frontier tech template (tech roadmap uncertainty, capital intensity, policy drivers)
 
 ### Examples (Validated Case Studies)

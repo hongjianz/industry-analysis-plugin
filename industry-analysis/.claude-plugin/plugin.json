@@ -1,7 +1,7 @@
 {
   "name": "industry-analysis",
-  "version": "1.2.0",
-  "description": "产业洞察SOP——系统性行业分析框架，基于王煜全《学会洞察行业》方法学。覆盖制造业、软件、生物医药、前沿技术四类行业，支持快速扫描和完整分析两种模式。支持MCP增强数据采集（PubMed、ChEMBL、Consensus、ClinicalTrials.gov）。",
+  "version": "2.0.0",
+  "description": "产业洞察SOP——系统性行业分析框架，基于王煜全《学会洞察行业》方法学。覆盖制造业、软件、生物医药、能源/清洁技术、前沿技术五类行业，支持 --quick（快速扫描）、--full（完整分析）、--compare（跨行业对比）三种模式。支持MCP增强数据采集（PubMed、ChEMBL、Consensus、ClinicalTrials.gov）。",
   "author": {
     "name": "hongjianz"
   },

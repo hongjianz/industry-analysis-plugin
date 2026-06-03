@@ -1,7 +1,7 @@
-# SOP v1.4 完整参考
+# SOP v2.0 完整参考
 
-> 产业洞察SOP v1.4完整流程。此文件在需要查看详尽步骤说明时加载。
-> v1.4新增：分阶段交互检查点、跨行业对比模式（`--compare`）、可跳过步骤标注。
+> 产业洞察SOP v2.0完整流程。此文件在需要查看详尽步骤说明时加载。
+> v2.0新增：能源/清洁技术行业类型、5类行业分类体系、社区贡献框架、英文版核心文件。
 
 ---
 
@@ -99,6 +99,7 @@ SOP的核心价值在于持续追踪和复盘。每次分析完成后必须执�
 | 制造业 | 财报、当前市场份额 | 上游材料出货量、大厂合作、监管变化 |
 | 软件业 | 注册用户数、季度营收 | 模型评估基准分、开发者社区增速、BYOK采用率 |
 | 生物医药 | 已获批药物销售额 | 临床试验阶段推进（Phase II→III）、关键试验数据读出、专利挑战 |
+| 能源 | 装机总量、发电量 | LCOE下降曲线、学习率斜率、政策路线图更新、PPA签约量 |
 | 前沿技术 | 无 | 技术里程碑验证、资本涌入、政策路线图 |
 
 ### 稀缺性控制点
@@ -107,6 +108,7 @@ SOP的核心价值在于持续追踪和复盘。每次分析完成后必须执�
 - 制造业：寻找上中下游中不可替代的节点（材料/工艺/渠道/品牌）
 - 软件业：寻找生态链中切换成本最高的节点（模型/工作流/数据/信任）
 - 生物医药：寻找管线价值最高的节点（靶点独占、专利壁垒、临床数据所有权）
+- 能源：寻找政策-技术-资本三角中最稀缺的资源（关键材料、电网接入、项目许可）
 - 前沿技术：寻找资本-人才-政策三角中的关键瓶颈
 
 ### 场景推演（四步预测法）
@@ -181,14 +183,15 @@ SOP的核心价值在于持续追踪和复盘。每次分析完成后必须执�
 在开始分析之前，确认以下文件全部存在：
 
 ### Core
-- [ ] `SKILL.md` — v1.4.0
-- [ ] `references/SOP-v1.0.md` — v1.4
+- [ ] `SKILL.md` — v2.0.0
+- [ ] `references/SOP-v1.0.md` — v2.0
 - [ ] `scripts/search.py`
 
 ### Templates
 - [ ] `references/templates/manufacturing.md`
 - [ ] `references/templates/software.md`
 - [ ] `references/templates/biotech.md`
+- [ ] `references/templates/energy.md`
 - [ ] `references/templates/frontier.md`
 
 ### Examples
@@ -196,6 +199,10 @@ SOP的核心价值在于持续追踪和复盘。每次分析完成后必须执�
 - [ ] `references/examples/ai-coding-example.md`
 - [ ] `references/examples/solid-state-example.md`
 - [ ] `references/examples/fusion-example.md`
+
+### Guides
+- [ ] `references/templates/TEMPLATE-GUIDE.md`
+- [ ] `CONTRIBUTING.md`
 
 ### Assets
 - [ ] `assets/scenario-matrix.md`

@@ -2,7 +2,7 @@
 """Industry Analysis SOP - Multi-source search strategy generator & integrity checker.
 
 Usage:
-  python3 search.py <industry_name> <manufacturing|software|biotech|frontier>
+  python3 search.py <industry_name> <type>
   python3 search.py <industry_name> <type> --with-mcp
   python3 search.py --compare "Industry A" <type_a> "Industry B" <type_b>
   python3 search.py --verify
@@ -35,7 +35,8 @@ class MCPQuery:
     priority: int
 
 
-VALID_TYPES = ("manufacturing", "software", "biotech", "frontier")
+INDUSTRY_TYPES_STR = "manufacturing|software|biotech|energy|frontier"
+VALID_TYPES = tuple(INDUSTRY_TYPES_STR.split("|"))
 
 PLUGIN_ROOT = os.environ.get(
     "CLAUDE_PLUGIN_ROOT",
@@ -52,7 +53,9 @@ REQUIRED_FILES = {
         "skills/industry-analysis/references/templates/manufacturing.md",
         "skills/industry-analysis/references/templates/software.md",
         "skills/industry-analysis/references/templates/biotech.md",
+        "skills/industry-analysis/references/templates/energy.md",
         "skills/industry-analysis/references/templates/frontier.md",
+        "skills/industry-analysis/references/templates/TEMPLATE-GUIDE.md",
     ],
     "Examples": [
         "skills/industry-analysis/references/examples/cgm-example.md",
@@ -68,6 +71,13 @@ REQUIRED_FILES = {
     ],
     "Outputs": [
         "outputs/README.md",
+    ],
+    "English": [
+        "skills/industry-analysis/references/english/SKILL_en.md",
+        "skills/industry-analysis/references/english/SOP_en.md",
+    ],
+    "Guides": [
+        "CONTRIBUTING.md",
     ],
     "Plugin Config": [
         ".claude-plugin/plugin.json",
@@ -130,6 +140,16 @@ def build_queries(industry: str, industry_type: str) -> List[SearchQuery]:
             SearchQuery(f"{industry} patent expiration exclusivity", 2, "policy"),
             SearchQuery(f"{industry} funding investment biotech 2026", 2, "market"),
             SearchQuery(f"{industry} licensing partnership deal", 3, "competition"),
+        ]
+    elif industry_type == "energy":
+        queries = [
+            SearchQuery(f"{industry} market size installed capacity 2025 2030", 1, "market"),
+            SearchQuery(f"{industry} LCOE cost learning curve", 1, "technology"),
+            SearchQuery(f"{industry} policy subsidy regulation carbon price", 1, "policy"),
+            SearchQuery(f"{industry} key companies market share competitive", 1, "competition"),
+            SearchQuery(f"{industry} supply chain critical materials", 2, "supply_chain"),
+            SearchQuery(f"{industry} project finance investment funding", 2, "market"),
+            SearchQuery(f"{industry} technology breakthrough efficiency 2026", 2, "technology"),
         ]
     elif industry_type == "frontier":
         queries = [
@@ -252,8 +272,8 @@ def print_compare_section(industry_a, type_a, industry_b, type_b):
 def main():
     if len(sys.argv) < 2:
         print("Usage:")
-        print(f"  python3 search.py <industry_name> <{'|'.join(VALID_TYPES)}>")
-        print(f"  python3 search.py <industry_name> <{'|'.join(VALID_TYPES)}> --with-mcp")
+        print(f"  python3 search.py <industry_name> <{INDUSTRY_TYPES_STR}>")
+        print(f"  python3 search.py <industry_name> <{INDUSTRY_TYPES_STR}> --with-mcp")
         print(f"  python3 search.py --compare \"Industry A\" <type> \"Industry B\" <type>")
         print("  python3 search.py --verify")
         sys.exit(1)
