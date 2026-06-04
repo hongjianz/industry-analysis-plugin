@@ -1,6 +1,8 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "industry-analysis",
-  "version": "2.1.0",
+  "displayName": "Industry Analysis",
+  "version": "2.2.0",
   "description": "产业洞察SOP——系统性行业分析框架，基于王煜全《学会洞察行业》方法学。覆盖制造业、软件、生物医药、能源/清洁技术、前沿技术五类行业，支持 --quick（快速扫描）、--full（完整分析）、--compare（跨行业对比）、--with-shiso（卡点分析增强）四种模式。支持MCP增强采集和紫苏叶卡点分析。",
   "author": {
     "name": "hongjianz"
@@ -13,45 +15,5 @@
     "SOP",
     "methodology",
     "行业分析"
-  ],
-  "commands": {
-    "industry-analysis": {
-      "file": "commands/industry-analysis.md",
-      "allow-args": true,
-      "description": "产业洞察SOP——基于王煜全方法学的系统性行业分析"
-    }
-  },
-  "skills": {
-    "industry-analysis": {
-      "file": "skills/industry-analysis/SKILL.md",
-      "description": "产业洞察SOP——系统性行业分析框架，支持 --quick（快速扫描）、--full（完整分析）、--compare（对比）、--with-shiso（卡点分析增强）"
-    }
-  },
-  "hooks": {
-    "session-start": {
-      "command": "python3 ${CLAUDE_PLUGIN_ROOT}/skills/industry-analysis/scripts/search.py --verify",
-      "description": "Verify all SOP reference files exist"
-    }
-  },
-  "mcp": {
-    "description": "Optional bio-research MCP servers that enhance data collection for biotech/pharma and frontier technology analysis. WebSearch serves as fallback when unavailable.",
-    "optional": [
-      {
-        "name": "plugin-bio-research-pubmed",
-        "description": "Biomedical literature search for clinical evidence and research papers"
-      },
-      {
-        "name": "plugin-bio-research-chembl",
-        "description": "Drug target mechanisms, compound bioactivity, and ADMET data"
-      },
-      {
-        "name": "plugin-bio-research-consensus",
-        "description": "Academic paper synthesis with citation metadata and study quality"
-      },
-      {
-        "name": "plugin-bio-research-c-trials",
-        "description": "Clinical trial pipeline data — phase distribution, sponsors, enrollment"
-      }
-    ]
-  }
+  ]
 }
